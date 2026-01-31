@@ -1,0 +1,1 @@
+export { UpdateStudentDto } from './create-student.dto';
