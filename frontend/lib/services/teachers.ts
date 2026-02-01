@@ -9,11 +9,11 @@ export interface CreateTeacherResponse extends Teacher {
 
 export const teachersService = {
     getAll: async (): Promise<Teacher[]> => {
-        const response = await api.get<ApiResponse<Teacher[]>>('/teachers');
+        const response = await api.get<ApiResponse<Teacher[]>>('/api/teachers');
         return response.data.data;
     },
     create: async (data: Partial<Teacher>): Promise<CreateTeacherResponse> => {
-        const response = await api.post<ApiResponse<CreateTeacherResponse>>('/teachers', data);
+        const response = await api.post<ApiResponse<CreateTeacherResponse>>('/api/teachers', data);
         return response.data.data;
     },
     update: async (id: string, data: Partial<Teacher>): Promise<Teacher> => {

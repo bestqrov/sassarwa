@@ -21,7 +21,7 @@ interface ApiResponse<T> {
 
 export const secretaryService = {
     getSecretaries: async () => {
-        const response = await api.get<ApiResponse<Secretary[]>>('/users/secretaries');
+        const response = await api.get<ApiResponse<Secretary[]>>('/api/users/secretaries');
         return response.data.data;
     },
 
@@ -35,7 +35,7 @@ export const secretaryService = {
         schoolLevel?: string;
         certification?: string;
     }) => {
-        const response = await api.put<ApiResponse<Secretary>>(`/users/secretaries/${id}`, data);
+        const response = await api.put<ApiResponse<Secretary>>(`/api/users/secretaries/${id}`, data);
         return response.data.data;
     },
 };

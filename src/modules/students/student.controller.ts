@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import { StudentService } from '../modules/students/student.service';
-import { CreateStudentDto } from '../modules/students/dto/create-student.dto';
-import { UpdateStudentDto } from '../modules/students/dto/update-student.dto';
+import { StudentService } from './student.service';
+import { CreateStudentDto } from './dto/create-student.dto';
+import { UpdateStudentDto } from './dto/update-student.dto';
 
 export class StudentController {
     static async create(req: Request, res: Response) {
@@ -102,11 +102,13 @@ export class StudentController {
                 success: true,
                 data: student
             });
+            return;
         } catch (error: any) {
             res.status(500).json({
                 success: false,
                 error: error.message
             });
+            return;
         }
     }
 
@@ -126,11 +128,13 @@ export class StudentController {
                 success: true,
                 data: student
             });
+            return;
         } catch (error: any) {
             res.status(400).json({
                 success: false,
                 error: error.message
             });
+            return;
         }
     }
 
@@ -149,11 +153,13 @@ export class StudentController {
                 success: true,
                 data: courses
             });
+            return;
         } catch (error: any) {
             res.status(500).json({
                 success: false,
                 error: error.message
             });
+            return;
         }
     }
 
@@ -172,11 +178,13 @@ export class StudentController {
                 success: true,
                 data: attendance
             });
+            return;
         } catch (error: any) {
             res.status(500).json({
                 success: false,
                 error: error.message
             });
+            return;
         }
     }
 
@@ -195,11 +203,13 @@ export class StudentController {
                 success: true,
                 data: notifications
             });
+            return;
         } catch (error: any) {
             res.status(500).json({
                 success: false,
                 error: error.message
             });
+            return;
         }
     }
 
@@ -220,11 +230,13 @@ export class StudentController {
                 success: true,
                 message: 'Notification marked as read'
             });
+            return;
         } catch (error: any) {
             res.status(400).json({
                 success: false,
                 error: error.message
             });
+            return;
         }
     }
 
@@ -243,11 +255,13 @@ export class StudentController {
                 success: true,
                 message: 'All notifications marked as read'
             });
+            return;
         } catch (error: any) {
             res.status(400).json({
                 success: false,
                 error: error.message
             });
+            return;
         }
     }
 
@@ -266,11 +280,13 @@ export class StudentController {
                 success: true,
                 data: stats
             });
+            return;
         } catch (error: any) {
             res.status(500).json({
                 success: false,
                 error: error.message
             });
+            return;
         }
     }
 
@@ -289,11 +305,13 @@ export class StudentController {
                 success: true,
                 data: sessions
             });
+            return;
         } catch (error: any) {
             res.status(500).json({
                 success: false,
                 error: error.message
             });
+            return;
         }
     }
 }

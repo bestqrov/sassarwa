@@ -33,17 +33,14 @@ interface AttendanceStats {
 }
 
 export default function ParentAttendance() {
-    const [activeTab, setActiveTab] = useState('attendance');
     const [attendanceRecords, setAttendanceRecords] = useState<ChildAttendance[]>([]);
     const [attendanceStats, setAttendanceStats] = useState<AttendanceStats[]>([]);
     const [loading, setLoading] = useState(true);
     const [selectedChild, setSelectedChild] = useState<string>('all');
 
     useEffect(() => {
-        if (activeTab === 'attendance') {
-            fetchAttendanceData();
-        }
-    }, [activeTab]);
+        fetchAttendanceData();
+    }, []);
 
     const fetchAttendanceData = async () => {
         try {
@@ -205,7 +202,7 @@ export default function ParentAttendance() {
 
     if (loading) {
         return (
-            <ParentLayout activeTab={activeTab} onTabChange={setActiveTab}>
+            <ParentLayout>
                 <div className="flex items-center justify-center h-64">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
                 </div>
@@ -214,8 +211,8 @@ export default function ParentAttendance() {
     }
 
     return (
-        <ParentLayout activeTab={activeTab} onTabChange={setActiveTab}>
-            {activeTab === 'attendance' && renderAttendance()}
+        <ParentLayout>
+            {renderAttendance()}
         </ParentLayout>
     );
 }

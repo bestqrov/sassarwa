@@ -144,9 +144,9 @@ model Payment {
 model Attendance {
   id        String   @id @default(uuid())
   studentId String
-  student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
   groupId   String
-  group     Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  student   Student  @relation(fields: [studentId], references: [id])
+  group     Group    @relation(fields: [groupId], references: [id])
   date      DateTime
   status    String   // PRESENT, ABSENT, LATE, EXCUSED
   notes     String?
@@ -174,6 +174,7 @@ model Formation {
   duration    String
   price       Float
   description String?
+  level        String? // Added missing field
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -299,9 +300,12 @@ model Notification {
   message     String
   type        String   // ADMIN, TEACHER, STUDENT, GENERAL
   recipientId String?  // Specific recipient, null for general
+  recipientType String? // Added missing field
   createdBy   String?  // Who created the notification
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  read         Boolean? @default(false) // Added missing field
+  readAt        DateTime? // Added missing field
 
   @@map("notifications")
 }
@@ -335,4 +339,11 @@ model Teacher {
   groups        Group[]
   homeworks     Homework[]
   exams         Exam[]
+  commission   Float? // Added missing field (added for clarity)
+  address       String? // Added missing field (added for clarity)
+  schoolLevel   String? // Added missing field (added for clarity)
+  specialties   String[] // Added missing field
+  levels        String[] // Added missing field
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }

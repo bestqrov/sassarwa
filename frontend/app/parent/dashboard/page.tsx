@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Calendar, Clock, Users, CreditCard, Bell, TrendingUp, User, AlertCircle, CheckCircle } from 'lucide-react';
 import ParentLayout from '../layout';
 import api from '@/lib/api';
@@ -24,7 +25,7 @@ interface RecentActivity {
 }
 
 export default function ParentDashboard() {
-    const [activeTab, setActiveTab] = useState('dashboard');
+    const router = useRouter();
     const [stats, setStats] = useState<ParentStats>({
         totalChildren: 0,
         totalAttendance: 0,
@@ -36,10 +37,8 @@ export default function ParentDashboard() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (activeTab === 'dashboard') {
-            fetchDashboardData();
-        }
-    }, [activeTab]);
+        fetchDashboardData();
+    }, []);
 
     const fetchDashboardData = async () => {
         try {
@@ -184,7 +183,7 @@ export default function ParentDashboard() {
                     <h3 className="font-semibold text-gray-900 mb-2">حضور اليوم</h3>
                     <p className="text-sm text-gray-600 mb-4">تحقق من حضور أبنائك اليوم</p>
                     <button
-                        onClick={() => setActiveTab('attendance')}
+                        onClick={() => router.push('/parent/attendance')}
                         className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
                     >
                         عرض الحضور
@@ -196,7 +195,7 @@ export default function ParentDashboard() {
                     <h3 className="font-semibold text-gray-900 mb-2">المدفوعات</h3>
                     <p className="text-sm text-gray-600 mb-4">عرض تاريخ المدفوعات</p>
                     <button
-                        onClick={() => setActiveTab('payments')}
+                        onClick={() => router.push('/parent/payments')}
                         className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors"
                     >
                         عرض المدفوعات
@@ -208,7 +207,7 @@ export default function ParentDashboard() {
                     <h3 className="font-semibold text-gray-900 mb-2">مواعيد الدروس</h3>
                     <p className="text-sm text-gray-600 mb-4">جدولة دروس أبنائك</p>
                     <button
-                        onClick={() => setActiveTab('courses')}
+                        onClick={() => router.push('/parent/courses')}
                         className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors"
                     >
                         عرض المواعيد
@@ -220,7 +219,7 @@ export default function ParentDashboard() {
 
     if (loading) {
         return (
-            <ParentLayout activeTab={activeTab} onTabChange={setActiveTab}>
+            <ParentLayout>
                 <div className="flex items-center justify-center h-64">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
                 </div>
@@ -229,8 +228,8 @@ export default function ParentDashboard() {
     }
 
     return (
-        <ParentLayout activeTab={activeTab} onTabChange={setActiveTab}>
-            {activeTab === 'dashboard' && renderDashboard()}
+        <ParentLayout>
+            {renderDashboard()}
         </ParentLayout>
     );
 }

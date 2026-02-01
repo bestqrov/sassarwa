@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { Mail, Lock, Eye, EyeOff, User } from 'lucide-react';
 import Link from 'next/link';
 import { useAuthStore } from '@/store/useAuthStore';
+import Input from '@/components/Input';
+import Button from '@/components/Button';
 
 export default function StudentLoginPage() {
     const router = useRouter();

@@ -2,10 +2,10 @@ import { IsString, IsEmail, IsOptional, IsEnum, IsDateString } from 'class-valid
 
 export class CreateStudentDto {
     @IsString()
-    name: string;
+    name: string = '';
 
     @IsString()
-    surname: string;
+    surname: string = '';
 
     @IsEmail()
     @IsOptional()

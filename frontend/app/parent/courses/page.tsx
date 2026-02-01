@@ -26,16 +26,13 @@ interface ChildCourse {
 }
 
 export default function ParentCourses() {
-    const [activeTab, setActiveTab] = useState('courses');
     const [courses, setCourses] = useState<ChildCourse[]>([]);
     const [loading, setLoading] = useState(true);
     const [selectedChild, setSelectedChild] = useState<string>('all');
 
     useEffect(() => {
-        if (activeTab === 'courses') {
-            fetchCourses();
-        }
-    }, [activeTab]);
+        fetchCourses();
+    }, []);
 
     const fetchCourses = async () => {
         try {
@@ -198,7 +195,7 @@ export default function ParentCourses() {
 
     if (loading) {
         return (
-            <ParentLayout activeTab={activeTab} onTabChange={setActiveTab}>
+            <ParentLayout>
                 <div className="flex items-center justify-center h-64">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
                 </div>
@@ -207,8 +204,8 @@ export default function ParentCourses() {
     }
 
     return (
-        <ParentLayout activeTab={activeTab} onTabChange={setActiveTab}>
-            {activeTab === 'courses' && renderCourses()}
+        <ParentLayout>
+            {renderCourses()}
         </ParentLayout>
     );
 }

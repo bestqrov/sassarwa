@@ -21,7 +21,6 @@ interface AttendanceRecord {
 }
 
 export default function StudentAttendance() {
-    const [activeTab, setActiveTab] = useState('attendance');
     const [attendanceRecords, setAttendanceRecords] = useState<AttendanceRecord[]>([]);
     const [loading, setLoading] = useState(true);
     const [stats, setStats] = useState({
@@ -33,10 +32,8 @@ export default function StudentAttendance() {
     });
 
     useEffect(() => {
-        if (activeTab === 'attendance') {
-            fetchAttendance();
-        }
-    }, [activeTab]);
+        fetchAttendance();
+    }, []);
 
     const fetchAttendance = async () => {
         try {
@@ -46,9 +43,9 @@ export default function StudentAttendance() {
 
             // Calculate stats
             const total = records.length;
-            const present = records.filter(r => r.status === 'present').length;
-            const absent = records.filter(r => r.status === 'absent').length;
-            const late = records.filter(r => r.status === 'late').length;
+            const present = records.filter((r: AttendanceRecord) => r.status === 'present').length;
+            const absent = records.filter((r: AttendanceRecord) => r.status === 'absent').length;
+            const late = records.filter((r: AttendanceRecord) => r.status === 'late').length;
             const percentage = total > 0 ? Math.round((present / total) * 100) : 0;
 
             setStats({ total, present, absent, late, percentage });
@@ -193,7 +190,7 @@ export default function StudentAttendance() {
 
     if (loading) {
         return (
-            <StudentLayout activeTab={activeTab} onTabChange={setActiveTab}>
+            <StudentLayout>
                 <div className="flex items-center justify-center h-64">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
                 </div>
@@ -202,8 +199,8 @@ export default function StudentAttendance() {
     }
 
     return (
-        <StudentLayout activeTab={activeTab} onTabChange={setActiveTab}>
-            {activeTab === 'attendance' && renderAttendance()}
+        <StudentLayout>
+            {renderAttendance()}
         </StudentLayout>
     );
 }

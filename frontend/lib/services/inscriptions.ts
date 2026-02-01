@@ -2,27 +2,27 @@ import api from '../api';
 import type { Inscription, InscriptionFormData, ApiResponse } from '@/types';
 
 export async function getInscriptions(): Promise<Inscription[]> {
-    const response = await api.get<ApiResponse<Inscription[]>>('/inscriptions');
+    const response = await api.get<ApiResponse<Inscription[]>>('/api/inscriptions');
     return response.data.data;
 }
 
 export async function getInscriptionById(id: string): Promise<Inscription> {
-    const response = await api.get<ApiResponse<Inscription>>(`/inscriptions/${id}`);
+    const response = await api.get<ApiResponse<Inscription>>(`/api/inscriptions/${id}`);
     return response.data.data;
 }
 
 export async function createInscription(data: InscriptionFormData): Promise<Inscription> {
-    const response = await api.post<ApiResponse<Inscription>>('/inscriptions', data);
+    const response = await api.post<ApiResponse<Inscription>>('/api/inscriptions', data);
     return response.data.data;
 }
 
 export async function updateInscription(id: string, data: Partial<InscriptionFormData>): Promise<Inscription> {
-    const response = await api.put<ApiResponse<Inscription>>(`/inscriptions/${id}`, data);
+    const response = await api.put<ApiResponse<Inscription>>(`/api/inscriptions/${id}`, data);
     return response.data.data;
 }
 
 export async function deleteInscription(id: string): Promise<void> {
-    await api.delete(`/inscriptions/${id}`);
+    await api.delete(`/api/inscriptions/${id}`);
 }
 
 export interface InscriptionAnalytics {
@@ -41,7 +41,7 @@ export interface InscriptionAnalytics {
 }
 
 export async function getInscriptionAnalytics(): Promise<InscriptionAnalytics> {
-    const response = await api.get<ApiResponse<InscriptionAnalytics>>('/inscriptions/analytics');
+    const response = await api.get<ApiResponse<InscriptionAnalytics>>('/api/inscriptions/analytics');
     return response.data.data;
 }
 

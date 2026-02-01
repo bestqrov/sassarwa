@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 
 export interface CreateTeacherData {
     name: string;
-    email?: string;
+    email: string;
     password?: string;
     phone?: string;
     cin?: string;

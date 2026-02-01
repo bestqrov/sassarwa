@@ -151,9 +151,11 @@ const TeachersContent = () => {
                 // For updates, don't send password if it's empty
                 const updateData = { ...formData };
                 if (!updateData.password) {
-                    delete updateData.password;
+                    const { password, ...dataWithoutPassword } = updateData;
+                    result = await teachersService.update(editingTeacher.id, dataWithoutPassword);
+                } else {
+                    result = await teachersService.update(editingTeacher.id, updateData);
                 }
-                result = await teachersService.update(editingTeacher.id, updateData);
             } else {
                 result = await teachersService.create(formData);
                 // Show the generated password to admin

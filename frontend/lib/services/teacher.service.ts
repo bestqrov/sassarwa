@@ -37,7 +37,6 @@ export interface Group {
     timeSlots?: any[];
     sessions?: any[];
     students: Student[];
-    formation?: any;
     _count: {
         students: number;
     };
@@ -201,23 +200,23 @@ export interface ReportData {
 class TeacherAPI {
     // Authentication
     async login(email: string, password: string) {
-        const response = await api.post('/teachers/login', { email, password });
+        const response = await api.post('/api/teachers/login', { email, password });
         return response.data;
     }
 
     // Profile Management
     async getProfile(): Promise<TeacherProfile> {
-        const response = await api.get('/teachers/profile');
+        const response = await api.get('/api/teachers/profile');
         return response.data;
     }
 
     async updateProfile(data: Partial<TeacherProfile>): Promise<TeacherProfile> {
-        const response = await api.put('/teachers/profile', data);
+        const response = await api.put('/api/teachers/profile', data);
         return response.data;
     }
 
     async changePassword(currentPassword: string, newPassword: string) {
-        const response = await api.put('/teachers/change-password', {
+        const response = await api.put('/api/teachers/change-password', {
             currentPassword,
             newPassword
         });
@@ -226,23 +225,23 @@ class TeacherAPI {
 
     // Groups Management
     async getGroups(): Promise<Group[]> {
-        const response = await api.get('/teachers/groups');
+        const response = await api.get('/api/teachers/groups');
         return response.data;
     }
 
     async getGroupDetails(groupId: string): Promise<Group> {
-        const response = await api.get(`/teachers/groups/${groupId}`);
+        const response = await api.get(`/api/teachers/groups/${groupId}`);
         return response.data;
     }
 
     // Attendance Management
     async getAttendance(params?: { groupId?: string; date?: string }): Promise<AttendanceRecord[]> {
-        const response = await api.get('/teachers/attendance', { params });
+        const response = await api.get('/api/teachers/attendance', { params });
         return response.data;
     }
 
     async markAttendance(groupId: string, date: string, attendanceData: any[]) {
-        const response = await api.post('/teachers/attendance', {
+        const response = await api.post('/api/teachers/attendance', {
             groupId,
             date,
             attendanceData
@@ -252,7 +251,7 @@ class TeacherAPI {
 
     // Homework Management
     async getHomework(params?: { groupId?: string }): Promise<Homework[]> {
-        const response = await api.get('/teachers/homework', { params });
+        const response = await api.get('/api/teachers/homework', { params });
         return response.data;
     }
 
@@ -264,13 +263,13 @@ class TeacherAPI {
         attachments?: string[];
         maxScore?: number;
     }): Promise<Homework> {
-        const response = await api.post('/teachers/homework', data);
+        const response = await api.post('/api/teachers/homework', data);
         return response.data;
     }
 
     // Exams Management
     async getExams(params?: { groupId?: string; upcoming?: boolean }): Promise<Exam[]> {
-        const response = await api.get('/teachers/exams', { params });
+        const response = await api.get('/api/teachers/exams', { params });
         return response.data;
     }
 
@@ -284,40 +283,40 @@ class TeacherAPI {
         type?: string;
         attachments?: string[];
     }): Promise<Exam> {
-        const response = await api.post('/teachers/exams', data);
+        const response = await api.post('/api/teachers/exams', data);
         return response.data;
     }
 
     // Notifications
     async getNotifications(params?: { read?: boolean; limit?: number }): Promise<Notification[]> {
-        const response = await api.get('/teachers/notifications', { params });
+        const response = await api.get('/api/teachers/notifications', { params });
         return response.data;
     }
 
     async markNotificationRead(notificationId: string) {
-        const response = await api.put(`/teachers/notifications/${notificationId}/read`);
+        const response = await api.put(`/api/teachers/notifications/${notificationId}/read`);
         return response.data;
     }
 
     // Settings
     async getSettings(): Promise<TeacherSettings> {
-        const response = await api.get('/teachers/settings');
+        const response = await api.get('/api/teachers/settings');
         return response.data;
     }
 
     async updateSettings(settings: Partial<TeacherSettings>): Promise<TeacherSettings> {
-        const response = await api.put('/teachers/settings', settings);
+        const response = await api.put('/api/teachers/settings', settings);
         return response.data;
     }
 
     // Reports
     async getReports(params?: { startDate?: string; endDate?: string }): Promise<ReportData> {
-        const response = await api.get('/teachers/reports', { params });
+        const response = await api.get('/api/teachers/reports', { params });
         return response.data;
     }
 
     async generateReport(type: 'attendance' | 'performance' | 'revenue', params?: { startDate?: string; endDate?: string }) {
-        const response = await api.get(`/teachers/reports/${type}`, {
+        const response = await api.get(`/api/teachers/reports/${type}`, {
             params,
             responseType: 'blob'
         });

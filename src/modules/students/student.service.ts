@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import { Student } from '@prisma/client';
-import { prisma } from '../../config/database';
+import prisma from '../../config/database';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 
@@ -74,23 +74,23 @@ export class StudentService {
 
     // Student portal methods
     static async getStudentCourses(studentId: string) {
-        // Get student's groups through inscriptions
-        const inscriptions = await prisma.inscription.findMany({
-            where: {
-                studentId,
-                type: 'SOUTIEN'
-            },
+        // Get student's groups
+        const student = await prisma.student.findUnique({
+            where: { id: studentId },
             include: {
                 groups: {
+                    where: { type: 'SOUTIEN' },
                     include: {
-                        teacher: true,
+                        teacher: true
+                    },
+                    select: {
                         timeSlots: true
                     }
                 }
             }
         });
 
-        return inscriptions.flatMap(inscription => inscription.groups);
+        return student?.groups || [];
     }
 
     static async getStudentAttendance(studentId: string) {
@@ -100,7 +100,7 @@ export class StudentService {
                 group: {
                     select: {
                         name: true,
-                        subject: true
+                        level: true
                     }
                 }
             },
@@ -129,7 +129,7 @@ export class StudentService {
 
         const totalCourses = courses.length;
         const totalAttendance = attendance.length;
-        const presentCount = attendance.filter(a => a.status === 'present').length;
+        const presentCount = attendance.filter((a: any) => a.status === 'present').length;
         const percentage = totalAttendance > 0 ? Math.round((presentCount / totalAttendance) * 100) : 0;
 
         // Get upcoming sessions (next 7 days)
@@ -151,7 +151,9 @@ export class StudentService {
         const nextWeek = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
 
         for (const course of courses) {
-            for (const timeSlot of course.timeSlots) {
+            const timeSlots = course.timeSlots as Array<{ day: string, startTime: string, endTime: string }> | null;
+            if (Array.isArray(timeSlots)) {
+                for (const timeSlot of timeSlots) {
                 // This is a simplified implementation
                 // In a real system, you'd need to calculate actual session dates
                 const sessionDate = new Date();
@@ -167,13 +169,14 @@ export class StudentService {
                     });
                 }
             }
+            }
         }
 
         return upcomingSessions.slice(0, 5); // Return next 5 sessions
     }
 
     static async validateCredentials(email: string, password: string): Promise<Student | null> {
-        const student = await prisma.student.findUnique({
+        const student = await prisma.student.findFirst({
             where: { email }
         });
 

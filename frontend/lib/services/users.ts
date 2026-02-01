@@ -4,12 +4,12 @@ import type { User, ApiResponse } from '@/types';
 
 
 export const getAllUsers = async (): Promise<User[]> => {
-    const response = await api.get<ApiResponse<User[]>>('/users');
+    const response = await api.get<ApiResponse<User[]>>('/api/users');
     return response.data.data;
 };
 
 export const getSecretaries = async (): Promise<User[]> => {
-    const response = await api.get<ApiResponse<User[]>>('/users/secretaries');
+    const response = await api.get<ApiResponse<User[]>>('/api/users/secretaries');
     return response.data.data;
 };
 
@@ -24,6 +24,6 @@ export const updateUser = async (id: string, data: any): Promise<User> => {
 };
 
 export const deleteUser = async (id: string): Promise<void> => {
-    await api.delete(`/users/${id}`);
+    await api.delete(`/api/users/${id}`);
 };
 

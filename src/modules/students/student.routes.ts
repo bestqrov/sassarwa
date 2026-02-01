@@ -6,11 +6,11 @@ import { roleMiddleware } from '../../middlewares/role.middleware';
 const router = Router();
 
 // Admin routes
-router.post('/', authMiddleware, roleMiddleware(['ADMIN', 'SECRETARY']), StudentController.create);
-router.get('/', authMiddleware, roleMiddleware(['ADMIN', 'SECRETARY']), StudentController.findAll);
-router.get('/:id', authMiddleware, roleMiddleware(['ADMIN', 'SECRETARY']), StudentController.findOne);
-router.put('/:id', authMiddleware, roleMiddleware(['ADMIN', 'SECRETARY']), StudentController.update);
-router.delete('/:id', authMiddleware, roleMiddleware(['ADMIN', 'SECRETARY']), StudentController.delete);
+ router.post('/', authMiddleware, roleMiddleware('ADMIN', 'SECRETARY'), StudentController.create);
+ router.get('/', authMiddleware, roleMiddleware('ADMIN', 'SECRETARY'), StudentController.findAll);
+ router.get('/:id', authMiddleware, roleMiddleware('ADMIN', 'SECRETARY'), StudentController.findOne);
+ router.put('/:id', authMiddleware, roleMiddleware('ADMIN', 'SECRETARY'), StudentController.update);
+ router.delete('/:id', authMiddleware, roleMiddleware('ADMIN', 'SECRETARY'), StudentController.delete);
 
 // Student portal routes
 router.get('/portal/profile', authMiddleware, StudentController.getProfile);

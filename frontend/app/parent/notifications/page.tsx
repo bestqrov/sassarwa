@@ -18,16 +18,13 @@ interface Notification {
 }
 
 export default function ParentNotifications() {
-    const [activeTab, setActiveTab] = useState('notifications');
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState<'all' | 'unread' | 'payment' | 'attendance'>('all');
 
     useEffect(() => {
-        if (activeTab === 'notifications') {
-            fetchNotifications();
-        }
-    }, [activeTab]);
+        fetchNotifications();
+    }, []);
 
     const fetchNotifications = async () => {
         try {
@@ -292,7 +289,7 @@ export default function ParentNotifications() {
 
     if (loading) {
         return (
-            <ParentLayout activeTab={activeTab} onTabChange={setActiveTab}>
+            <ParentLayout>
                 <div className="flex items-center justify-center h-64">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
                 </div>
@@ -301,8 +298,8 @@ export default function ParentNotifications() {
     }
 
     return (
-        <ParentLayout activeTab={activeTab} onTabChange={setActiveTab}>
-            {activeTab === 'notifications' && renderNotifications()}
+        <ParentLayout>
+            {renderNotifications()}
         </ParentLayout>
     );
 }

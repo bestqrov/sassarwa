@@ -27,15 +27,12 @@ interface Child {
 }
 
 export default function ParentChildren() {
-    const [activeTab, setActiveTab] = useState('children');
     const [children, setChildren] = useState<Child[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (activeTab === 'children') {
-            fetchChildren();
-        }
-    }, [activeTab]);
+        fetchChildren();
+    }, []);
 
     const fetchChildren = async () => {
         try {
@@ -139,7 +136,7 @@ export default function ParentChildren() {
 
     if (loading) {
         return (
-            <ParentLayout activeTab={activeTab} onTabChange={setActiveTab}>
+            <ParentLayout>
                 <div className="flex items-center justify-center h-64">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
                 </div>
@@ -148,8 +145,8 @@ export default function ParentChildren() {
     }
 
     return (
-        <ParentLayout activeTab={activeTab} onTabChange={setActiveTab}>
-            {activeTab === 'children' && renderChildren()}
+        <ParentLayout>
+            {renderChildren()}
         </ParentLayout>
     );
 }

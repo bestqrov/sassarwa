@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { FileText, Plus, Calendar, Clock, Users, Edit, Trash2, Eye } from 'lucide-react';
+import { FileText, Plus, Calendar, Clock, Users, Edit, Trash2, Eye, X } from 'lucide-react';
 import TeacherLayout from '../layout';
 import api from '@/lib/api';
 import Button from '@/components/Button';

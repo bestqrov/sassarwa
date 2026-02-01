@@ -24,15 +24,12 @@ interface StudentGroup {
 }
 
 export default function StudentCourses() {
-    const [activeTab, setActiveTab] = useState('courses');
     const [groups, setGroups] = useState<StudentGroup[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (activeTab === 'courses') {
-            fetchCourses();
-        }
-    }, [activeTab]);
+        fetchCourses();
+    }, []);
 
     const fetchCourses = async () => {
         try {
@@ -122,7 +119,7 @@ export default function StudentCourses() {
 
     if (loading) {
         return (
-            <StudentLayout activeTab={activeTab} onTabChange={setActiveTab}>
+            <StudentLayout>
                 <div className="flex items-center justify-center h-64">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
                 </div>
@@ -131,8 +128,8 @@ export default function StudentCourses() {
     }
 
     return (
-        <StudentLayout activeTab={activeTab} onTabChange={setActiveTab}>
-            {activeTab === 'courses' && renderCourses()}
+        <StudentLayout>
+            {renderCourses()}
         </StudentLayout>
     );
 }

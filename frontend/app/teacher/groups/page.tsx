@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Users, Calendar, MapPin, Clock, Eye } from 'lucide-react';
+import { Users, Calendar, MapPin, Clock, Eye, BookOpen, X, User } from 'lucide-react';
 import TeacherLayout from '../layout';
 import api from '@/lib/api';
 import Button from '@/components/Button';

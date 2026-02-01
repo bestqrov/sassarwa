@@ -18,7 +18,6 @@ interface ParentProfile {
 }
 
 export default function ParentProfile() {
-    const [activeTab, setActiveTab] = useState('profile');
     const [profile, setProfile] = useState<ParentProfile | null>(null);
     const [loading, setLoading] = useState(true);
     const [editing, setEditing] = useState(false);
@@ -31,10 +30,8 @@ export default function ParentProfile() {
     });
 
     useEffect(() => {
-        if (activeTab === 'profile') {
-            fetchProfile();
-        }
-    }, [activeTab]);
+        fetchProfile();
+    }, []);
 
     const fetchProfile = async () => {
         try {
@@ -315,7 +312,7 @@ export default function ParentProfile() {
 
     if (loading) {
         return (
-            <ParentLayout activeTab={activeTab} onTabChange={setActiveTab}>
+            <ParentLayout>
                 <div className="flex items-center justify-center h-64">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
                 </div>
@@ -324,8 +321,8 @@ export default function ParentProfile() {
     }
 
     return (
-        <ParentLayout activeTab={activeTab} onTabChange={setActiveTab}>
-            {activeTab === 'profile' && renderProfile()}
+        <ParentLayout>
+            {renderProfile()}
         </ParentLayout>
     );
 }

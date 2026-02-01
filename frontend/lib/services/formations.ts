@@ -10,22 +10,22 @@ export interface Formation {
 
 export const formationsService = {
     getAll: async () => {
-        const response = await api.get<Formation[]>('/formations');
+        const response = await api.get<Formation[]>('/api/formations');
         return response.data;
     },
 
     create: async (data: Omit<Formation, 'id'>) => {
-        const response = await api.post<Formation>('/formations', data);
+        const response = await api.post<Formation>('/api/formations', data);
         return response.data;
     },
 
     update: async (id: string, data: Partial<Formation>) => {
-        const response = await api.put<Formation>(`/formations/${id}`, data);
+        const response = await api.put<Formation>(`/api/formations/${id}`, data);
         return response.data;
     },
 
     delete: async (id: string) => {
-        await api.delete(`/formations/${id}`);
+        await api.delete(`/api/formations/${id}`);
     },
 
     getAnalytics: async () => {
@@ -35,7 +35,7 @@ export const formationsService = {
             totalRevenue: number;
             monthlyRevenue: number;
             recentInscriptions: any[];
-        }>('/formations/analytics');
+        }>('/api/formations/analytics');
         return response.data;
     },
 };

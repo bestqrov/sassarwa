@@ -3,10 +3,9 @@
 import { useState, useEffect } from 'react';
 import { User, Mail, Phone, MapPin, Calendar, Clock, Bell, Settings, LogOut, Users, CreditCard, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import api from '@/lib/api';
 import Button from '@/components/Button';
-import notifications from '@/lib/utils/notifications';
 
 interface ParentProfile {
     id: string;
@@ -28,73 +27,13 @@ interface ParentProfile {
     }>;
 }
 
-interface ChildAttendance {
-    id: string;
-    studentId: string;
-    studentName: string;
-    date: string;
-    status: 'present' | 'absent' | 'late';
-    group: {
-        name: string;
-        subject: string;
-    };
-    session?: {
-        startTime: string;
-        endTime: string;
-        room?: string;
-    };
-}
-
-interface PaymentRecord {
-    id: string;
-    studentId: string;
-    studentName: string;
-    amount: number;
-    method: string;
-    date: string;
-    status: string;
-    note?: string;
-}
-
-interface ChildCourse {
-    id: string;
-    studentId: string;
-    studentName: string;
-    groupName: string;
-    subject: string;
-    level: string;
-    room?: string;
-    timeSlots: Array<{
-        day: string;
-        startTime: string;
-        endTime: string;
-    }>;
-    teacher: {
-        name: string;
-        email?: string;
-    };
-}
-
-interface ParentNotification {
-    id: string;
-    title: string;
-    message: string;
-    type: 'info' | 'warning' | 'success' | 'error';
-    isRead: boolean;
-    createdAt: string;
-    relatedTo: {
-        type: 'payment' | 'attendance' | 'course' | 'general';
-        studentId?: string;
-        studentName?: string;
-    };
-}
-
-export default function ParentLayout({ children, activeTab, onTabChange }: {
+export default function ParentLayout({
+    children
+}: {
     children: React.ReactNode;
-    activeTab: string;
-    onTabChange: (tab: string) => void;
 }) {
     const router = useRouter();
+    const pathname = usePathname();
     const [profile, setProfile] = useState<ParentProfile | null>(null);
     const [loading, setLoading] = useState(true);
 
@@ -121,13 +60,13 @@ export default function ParentLayout({ children, activeTab, onTabChange }: {
     };
 
     const menuItems = [
-        { id: 'dashboard', label: 'لوحة التحكم', icon: User },
-        { id: 'children', label: 'أبنائي', icon: Users },
-        { id: 'attendance', label: 'حضور الأبناء', icon: Clock },
-        { id: 'payments', label: 'المدفوعات', icon: CreditCard },
-        { id: 'courses', label: 'مواعيد الدروس', icon: Calendar },
-        { id: 'notifications', label: 'الإشعارات', icon: Bell },
-        { id: 'profile', label: 'الملف الشخصي', icon: Settings },
+        { id: 'dashboard', label: 'لوحة التحكم', icon: User, href: '/parent/dashboard' },
+        { id: 'children', label: 'أبنائي', icon: Users, href: '/parent/children' },
+        { id: 'attendance', label: 'حضور الأبناء', icon: Clock, href: '/parent/attendance' },
+        { id: 'payments', label: 'المدفوعات', icon: CreditCard, href: '/parent/payments' },
+        { id: 'courses', label: 'مواعيد الدروس', icon: Calendar, href: '/parent/courses' },
+        { id: 'notifications', label: 'الإشعارات', icon: Bell, href: '/parent/notifications' },
+        { id: 'profile', label: 'الملف الشخصي', icon: Settings, href: '/parent/profile' },
     ];
 
     if (loading) {
@@ -179,19 +118,20 @@ export default function ParentLayout({ children, activeTab, onTabChange }: {
                         <nav className="space-y-2">
                             {menuItems.map((item) => {
                                 const Icon = item.icon;
+                                const isActive = pathname === item.href;
                                 return (
-                                    <button
+                                    <Link
                                         key={item.id}
-                                        onClick={() => onTabChange(item.id)}
+                                        href={item.href}
                                         className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-right transition-colors ${
-                                            activeTab === item.id
+                                            isActive
                                                 ? 'bg-blue-100 text-blue-700'
                                                 : 'text-gray-600 hover:bg-gray-100'
                                         }`}
                                     >
                                         <Icon className="w-5 h-5" />
                                         <span className="font-medium">{item.label}</span>
-                                    </button>
+                                    </Link>
                                 );
                             })}
                         </nav>

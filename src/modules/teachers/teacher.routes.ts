@@ -10,7 +10,7 @@ router.post('/login', teacherController.login);
 
 // مسارات محمية (تتطلب مصادقة)
 router.use(authMiddleware);
-router.use(roleMiddleware(['TEACHER']));
+ router.use(roleMiddleware('TEACHER'));
 
 // ملف شخصي
 router.get('/profile', teacherController.getProfile);

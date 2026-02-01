@@ -7,13 +7,13 @@ import { sendSuccess, sendError } from '../../utils/response';
 
 export const create = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { studentId, date, status } = req.body;
+        const { studentId, groupId, date, status } = req.body;
 
         // Validate required fields
-        if (!studentId || !date || !status) {
+        if (!studentId || !groupId || !date || !status) {
             sendError(
                 res,
-                'StudentId, date, and status are required',
+                'StudentId, groupId, date, and status are required',
                 'Validation error',
                 400
             );
@@ -32,6 +32,7 @@ export const create = async (req: Request, res: Response): Promise<void> => {
 
         const attendance = await createAttendance({
             studentId,
+            groupId,
             date: new Date(date),
             status,
         });

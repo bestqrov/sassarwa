@@ -2,12 +2,13 @@ import prisma from '../../config/database';
 
 interface CreateAttendanceData {
     studentId: string;
+    groupId: string;
     date: Date;
     status: string;
 }
 
 export const createAttendance = async (data: CreateAttendanceData) => {
-    const { studentId, date, status } = data;
+    const { studentId, groupId, date, status } = data;
 
     // Validate status
     if (!['present', 'absent'].includes(status)) {
@@ -26,6 +27,7 @@ export const createAttendance = async (data: CreateAttendanceData) => {
     const attendance = await prisma.attendance.create({
         data: {
             studentId,
+            groupId,
             date,
             status,
         },

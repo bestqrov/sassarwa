@@ -12,31 +12,31 @@ export interface PricingItem {
 
 export const pricingService = {
     getAll: async (): Promise<PricingItem[]> => {
-        const response = await api.get('/pricing');
+        const response = await api.get('/api/pricing');
         return response.data.data;
     },
 
     getByCategory: async (category: string): Promise<PricingItem[]> => {
-        const response = await api.get(`/pricing?category=${category}`);
+        const response = await api.get(`/api/pricing?category=${category}`);
         return response.data.data;
     },
 
     create: async (data: PricingItem): Promise<PricingItem> => {
-        const response = await api.post('/pricing', data);
+        const response = await api.post('/api/pricing', data);
         return response.data.data;
     },
 
     update: async (id: string, data: Partial<PricingItem>): Promise<PricingItem> => {
-        const response = await api.put(`/pricing/${id}`, data);
+        const response = await api.put(`/api/pricing/${id}`, data);
         return response.data.data;
     },
 
     bulkUpsert: async (items: PricingItem[]): Promise<PricingItem[]> => {
-        const response = await api.put('/pricing/bulk', { items });
+        const response = await api.put('/api/pricing/bulk', { items });
         return response.data.data;
     },
 
     delete: async (id: string): Promise<void> => {
-        await api.delete(`/pricing/${id}`);
+        await api.delete(`/api/pricing/${id}`);
     }
 };

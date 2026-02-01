@@ -28,7 +28,6 @@ interface PaymentStats {
 }
 
 export default function ParentPayments() {
-    const [activeTab, setActiveTab] = useState('payments');
     const [paymentRecords, setPaymentRecords] = useState<PaymentRecord[]>([]);
     const [paymentStats, setPaymentStats] = useState<PaymentStats>({
         totalPaid: 0,
@@ -40,10 +39,8 @@ export default function ParentPayments() {
     const [selectedChild, setSelectedChild] = useState<string>('all');
 
     useEffect(() => {
-        if (activeTab === 'payments') {
-            fetchPaymentData();
-        }
-    }, [activeTab]);
+        fetchPaymentData();
+    }, []);
 
     const fetchPaymentData = async () => {
         try {
@@ -247,7 +244,7 @@ export default function ParentPayments() {
 
     if (loading) {
         return (
-            <ParentLayout activeTab={activeTab} onTabChange={setActiveTab}>
+            <ParentLayout>
                 <div className="flex items-center justify-center h-64">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
                 </div>
@@ -256,8 +253,8 @@ export default function ParentPayments() {
     }
 
     return (
-        <ParentLayout activeTab={activeTab} onTabChange={setActiveTab}>
-            {activeTab === 'payments' && renderPayments()}
+        <ParentLayout>
+            {renderPayments()}
         </ParentLayout>
     );
 }

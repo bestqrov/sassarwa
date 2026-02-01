@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { PrismaClient } from '@prisma/client';
-import { AuthenticatedRequest } from '../middlewares/auth.middleware';
+import { AuthRequest } from '../../middlewares/auth.middleware';
 
 const prisma = new PrismaClient();
 
@@ -44,14 +44,16 @@ export const teacherController = {
                     role: teacher.role
                 }
             });
+            return;
         } catch (error) {
             console.error('Teacher login error:', error);
             res.status(500).json({ message: 'خطأ في الخادم' });
+            return;
         }
     },
 
     // الحصول على بيانات الأستاذ الحالي
-    async getProfile(req: AuthenticatedRequest, res: Response) {
+    async getProfile(req: AuthRequest, res: Response) {
         try {
             const teacher = await prisma.teacher.findUnique({
                 where: { id: req.user!.id },
@@ -68,13 +70,11 @@ export const teacherController = {
                     role: true,
                     address: true,
                     schoolLevel: true,
-                    certification: true,
                     hourlyRate: true,
                     paymentType: true,
                     commission: true,
                     specialties: true,
                     levels: true,
-                    socialMedia: true,
                     createdAt: true,
                     updatedAt: true
                 }
@@ -85,21 +85,22 @@ export const teacherController = {
             }
 
             res.json(teacher);
+            return;
         } catch (error) {
             console.error('Get teacher profile error:', error);
             res.status(500).json({ message: 'خطأ في الخادم' });
+            return;
         }
     },
 
     // تحديث بيانات الأستاذ
-    async updateProfile(req: AuthenticatedRequest, res: Response) {
+    async updateProfile(req: AuthRequest, res: Response) {
         try {
             const {
                 name,
                 phone,
                 address,
                 schoolLevel,
-                certification,
                 hourlyRate,
                 specialties,
                 levels
@@ -112,7 +113,6 @@ export const teacherController = {
                     phone,
                     address,
                     schoolLevel,
-                    certification,
                     hourlyRate: parseFloat(hourlyRate),
                     specialties,
                     levels
@@ -124,7 +124,6 @@ export const teacherController = {
                     phone: true,
                     address: true,
                     schoolLevel: true,
-                    certification: true,
                     hourlyRate: true,
                     specialties: true,
                     levels: true,
@@ -140,7 +139,7 @@ export const teacherController = {
     },
 
     // تغيير كلمة المرور
-    async changePassword(req: AuthenticatedRequest, res: Response) {
+    async changePassword(req: AuthRequest, res: Response) {
         try {
             const { currentPassword, newPassword } = req.body;
 
@@ -165,14 +164,16 @@ export const teacherController = {
             });
 
             res.json({ message: 'تم تغيير كلمة المرور بنجاح' });
+            return;
         } catch (error) {
             console.error('Change password error:', error);
             res.status(500).json({ message: 'خطأ في الخادم' });
+            return;
         }
     },
 
     // الحصول على الأقسام الخاصة بالأستاذ
-    async getGroups(req: AuthenticatedRequest, res: Response) {
+    async getGroups(req: AuthRequest, res: Response) {
         try {
             const groups = await prisma.group.findMany({
                 where: {
@@ -193,8 +194,7 @@ export const teacherController = {
                         select: {
                             id: true,
                             name: true,
-                            level: true,
-                            subject: true
+                            level: true
                         }
                     },
                     _count: {
@@ -212,7 +212,7 @@ export const teacherController = {
     },
 
     // الحصول على تفاصيل قسم معين
-    async getGroupDetails(req: AuthenticatedRequest, res: Response) {
+    async getGroupDetails(req: AuthRequest, res: Response) {
         try {
             const { groupId } = req.params;
 
@@ -237,13 +237,8 @@ export const teacherController = {
                             id: true,
                             name: true,
                             level: true,
-                            subject: true,
                             description: true
                         }
-                    },
-                    sessions: {
-                        orderBy: { date: 'desc' },
-                        take: 10
                     }
                 }
             });
@@ -253,14 +248,16 @@ export const teacherController = {
             }
 
             res.json(group);
+            return;
         } catch (error) {
             console.error('Get group details error:', error);
             res.status(500).json({ message: 'خطأ في الخادم' });
+            return;
         }
     },
 
     // الحصول على سجلات الحضور
-    async getAttendance(req: AuthenticatedRequest, res: Response) {
+    async getAttendance(req: AuthRequest, res: Response) {
         try {
             const { groupId, date } = req.query;
 
@@ -312,7 +309,7 @@ export const teacherController = {
     },
 
     // تسجيل الحضور
-    async markAttendance(req: AuthenticatedRequest, res: Response) {
+    async markAttendance(req: AuthRequest, res: Response) {
         try {
             const { groupId, date, attendanceData } = req.body;
 
@@ -353,14 +350,16 @@ export const teacherController = {
                 message: 'تم تسجيل الحضور بنجاح',
                 count: createdAttendance.count
             });
+            return;
         } catch (error) {
             console.error('Mark attendance error:', error);
             res.status(500).json({ message: 'خطأ في الخادم' });
+            return;
         }
     },
 
     // الحصول على الواجبات
-    async getHomework(req: AuthenticatedRequest, res: Response) {
+    async getHomework(req: AuthRequest, res: Response) {
         try {
             const { groupId } = req.query;
 
@@ -412,7 +411,7 @@ export const teacherController = {
     },
 
     // إنشاء واجب جديد
-    async createHomework(req: AuthenticatedRequest, res: Response) {
+    async createHomework(req: AuthRequest, res: Response) {
         try {
             const {
                 title,
@@ -456,14 +455,16 @@ export const teacherController = {
             });
 
             res.status(201).json(homework);
+            return;
         } catch (error) {
             console.error('Create homework error:', error);
             res.status(500).json({ message: 'خطأ في الخادم' });
+            return;
         }
     },
 
     // الحصول على الامتحانات
-    async getExams(req: AuthenticatedRequest, res: Response) {
+    async getExams(req: AuthRequest, res: Response) {
         try {
             const { groupId, upcoming } = req.query;
 
@@ -521,7 +522,7 @@ export const teacherController = {
     },
 
     // إنشاء امتحان جديد
-    async createExam(req: AuthenticatedRequest, res: Response) {
+    async createExam(req: AuthRequest, res: Response) {
         try {
             const {
                 title,
@@ -569,14 +570,16 @@ export const teacherController = {
             });
 
             res.status(201).json(exam);
+            return;
         } catch (error) {
             console.error('Create exam error:', error);
             res.status(500).json({ message: 'خطأ في الخادم' });
+            return;
         }
     },
 
     // الحصول على الإشعارات
-    async getNotifications(req: AuthenticatedRequest, res: Response) {
+    async getNotifications(req: AuthRequest, res: Response) {
         try {
             const { read, limit = 20 } = req.query;
 
@@ -605,7 +608,7 @@ export const teacherController = {
     },
 
     // تحديث حالة الإشعار كمقروء
-    async markNotificationRead(req: AuthenticatedRequest, res: Response) {
+    async markNotificationRead(req: AuthRequest, res: Response) {
         try {
             const { notificationId } = req.params;
 
@@ -629,58 +632,19 @@ export const teacherController = {
             });
 
             res.json({ message: 'تم تحديث الإشعار' });
+            return;
         } catch (error) {
             console.error('Mark notification read error:', error);
             res.status(500).json({ message: 'خطأ في الخادم' });
+            return;
         }
     },
 
     // الحصول على الإعدادات
-    async getSettings(req: AuthenticatedRequest, res: Response) {
+    async getSettings(req: AuthRequest, res: Response) {
         try {
-            const teacher = await prisma.teacher.findUnique({
-                where: { id: req.user!.id },
-                select: {
-                    notifications: true,
-                    privacy: true,
-                    preferences: true,
-                    security: true
-                }
-            });
-
-            if (!teacher) {
-                return res.status(404).json({ message: 'الأستاذ غير موجود' });
-            }
-
-            // إرجاع الإعدادات الافتراضية إذا لم تكن محددة
-            const settings = {
-                notifications: teacher.notifications || {
-                    email: true,
-                    push: true,
-                    sms: false,
-                    homeworkReminders: true,
-                    examReminders: true,
-                    paymentNotifications: true
-                },
-                privacy: teacher.privacy || {
-                    profileVisibility: 'public',
-                    showEmail: true,
-                    showPhone: true
-                },
-                preferences: teacher.preferences || {
-                    language: 'ar',
-                    theme: 'light',
-                    timezone: 'Africa/Casablanca',
-                    dateFormat: 'DD/MM/YYYY',
-                    currency: 'MAD'
-                },
-                security: teacher.security || {
-                    twoFactorEnabled: false,
-                    sessionTimeout: 60
-                }
-            };
-
-            res.json(settings);
+            // No settings fields in schema, return empty/default
+            res.json({});
         } catch (error) {
             console.error('Get settings error:', error);
             res.status(500).json({ message: 'خطأ في الخادم' });
@@ -688,27 +652,10 @@ export const teacherController = {
     },
 
     // تحديث الإعدادات
-    async updateSettings(req: AuthenticatedRequest, res: Response) {
+    async updateSettings(req: AuthRequest, res: Response) {
         try {
-            const { notifications, privacy, preferences, security } = req.body;
-
-            const updatedTeacher = await prisma.teacher.update({
-                where: { id: req.user!.id },
-                data: {
-                    notifications,
-                    privacy,
-                    preferences,
-                    security
-                },
-                select: {
-                    notifications: true,
-                    privacy: true,
-                    preferences: true,
-                    security: true
-                }
-            });
-
-            res.json(updatedTeacher);
+            // No settings fields in schema, do nothing
+            res.json({});
         } catch (error) {
             console.error('Update settings error:', error);
             res.status(500).json({ message: 'خطأ في الخادم' });
@@ -716,7 +663,7 @@ export const teacherController = {
     },
 
     // الحصول على التقارير
-    async getReports(req: AuthenticatedRequest, res: Response) {
+    async getReports(req: AuthRequest, res: Response) {
         try {
             const { startDate, endDate } = req.query;
 

@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import { PrismaClient } from '@prisma/client';
-import bcrypt from 'bcryptjs';
+import bcrypt from 'bcrypt';
 import { InscriptionType } from '@prisma/client';
 
 const prisma = new PrismaClient();
@@ -14,10 +14,10 @@ async function main() {
     const hashedAdminPassword = await bcrypt.hash('admin123', 10);
 
     const admin = await prisma.user.upsert({
-        where: { email: 'admin@arwaeduc.com' },
+        where: { email: 'enovazone@arwaeduc.com' },
         update: {},
         create: {
-            email: 'admin@arwaeduc.com',
+            email: 'enovazone@arwaeduc.com',
             password: hashedAdminPassword,
             name: 'Administrateur ARWAEDUC',
             role: 'ADMIN',

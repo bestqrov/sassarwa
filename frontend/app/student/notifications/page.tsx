@@ -20,16 +20,13 @@ interface Notification {
 }
 
 export default function StudentNotifications() {
-    const [activeTab, setActiveTab] = useState('notifications');
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState<'all' | 'unread' | 'read'>('all');
 
     useEffect(() => {
-        if (activeTab === 'notifications') {
-            fetchNotifications();
-        }
-    }, [activeTab]);
+        fetchNotifications();
+    }, []);
 
     const fetchNotifications = async () => {
         try {
@@ -240,7 +237,7 @@ export default function StudentNotifications() {
 
     if (loading) {
         return (
-            <StudentLayout activeTab={activeTab} onTabChange={setActiveTab}>
+            <StudentLayout>
                 <div className="flex items-center justify-center h-64">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
                 </div>
@@ -249,8 +246,8 @@ export default function StudentNotifications() {
     }
 
     return (
-        <StudentLayout activeTab={activeTab} onTabChange={setActiveTab}>
-            {activeTab === 'notifications' && renderNotifications()}
+        <StudentLayout>
+            {renderNotifications()}
         </StudentLayout>
     );
 }

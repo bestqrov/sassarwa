@@ -23,7 +23,6 @@ interface StudentProfile {
 }
 
 export default function StudentProfile() {
-    const [activeTab, setActiveTab] = useState('profile');
     const [profile, setProfile] = useState<StudentProfile | null>(null);
     const [loading, setLoading] = useState(true);
     const [editing, setEditing] = useState(false);
@@ -31,10 +30,8 @@ export default function StudentProfile() {
     const [saving, setSaving] = useState(false);
 
     useEffect(() => {
-        if (activeTab === 'profile') {
-            fetchProfile();
-        }
-    }, [activeTab]);
+        fetchProfile();
+    }, []);
 
     const fetchProfile = async () => {
         try {
@@ -323,7 +320,7 @@ export default function StudentProfile() {
 
     if (loading) {
         return (
-            <StudentLayout activeTab={activeTab} onTabChange={setActiveTab}>
+            <StudentLayout>
                 <div className="flex items-center justify-center h-64">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
                 </div>
@@ -332,8 +329,8 @@ export default function StudentProfile() {
     }
 
     return (
-        <StudentLayout activeTab={activeTab} onTabChange={setActiveTab}>
-            {activeTab === 'profile' && renderProfile()}
+        <StudentLayout>
+            {renderProfile()}
         </StudentLayout>
     );
 }

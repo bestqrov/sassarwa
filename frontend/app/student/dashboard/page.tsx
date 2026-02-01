@@ -23,7 +23,6 @@ interface UpcomingSession {
 }
 
 export default function StudentDashboard() {
-    const [activeTab, setActiveTab] = useState('dashboard');
     const [stats, setStats] = useState<StudentStats>({
         totalCourses: 0,
         totalAttendance: 0,
@@ -34,10 +33,8 @@ export default function StudentDashboard() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (activeTab === 'dashboard') {
-            fetchDashboardData();
-        }
-    }, [activeTab]);
+        fetchDashboardData();
+    }, []);
 
     const fetchDashboardData = async () => {
         try {
@@ -155,7 +152,7 @@ export default function StudentDashboard() {
 
     if (loading) {
         return (
-            <StudentLayout activeTab={activeTab} onTabChange={setActiveTab}>
+            <StudentLayout>
                 <div className="flex items-center justify-center h-64">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
                 </div>
@@ -164,8 +161,8 @@ export default function StudentDashboard() {
     }
 
     return (
-        <StudentLayout activeTab={activeTab} onTabChange={setActiveTab}>
-            {activeTab === 'dashboard' && renderDashboard()}
+        <StudentLayout>
+            {renderDashboard()}
         </StudentLayout>
     );
 }

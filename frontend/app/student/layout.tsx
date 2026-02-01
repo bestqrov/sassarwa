@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { User, Mail, Phone, MapPin, Calendar, BookOpen, Clock, Bell, Settings, LogOut } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import api from '@/lib/api';
 import Button from '@/components/Button';
 import notifications from '@/lib/utils/notifications';
@@ -55,12 +55,13 @@ interface Notification {
     createdAt: string;
 }
 
-export default function StudentLayout({ children, activeTab, onTabChange }: {
+export default function StudentLayout({
+    children
+}: {
     children: React.ReactNode;
-    activeTab: string;
-    onTabChange: (tab: string) => void;
 }) {
     const router = useRouter();
+    const pathname = usePathname();
     const [profile, setProfile] = useState<StudentProfile | null>(null);
     const [loading, setLoading] = useState(true);
 
@@ -87,11 +88,11 @@ export default function StudentLayout({ children, activeTab, onTabChange }: {
     };
 
     const menuItems = [
-        { id: 'dashboard', label: 'لوحة التحكم', icon: User },
-        { id: 'courses', label: 'الدروس', icon: BookOpen },
-        { id: 'attendance', label: 'الحضور', icon: Clock },
-        { id: 'notifications', label: 'الإشعارات', icon: Bell },
-        { id: 'profile', label: 'الملف الشخصي', icon: Settings },
+        { id: 'dashboard', label: 'لوحة التحكم', icon: User, href: '/student/dashboard' },
+        { id: 'courses', label: 'الدروس', icon: BookOpen, href: '/student/courses' },
+        { id: 'attendance', label: 'الحضور', icon: Clock, href: '/student/attendance' },
+        { id: 'notifications', label: 'الإشعارات', icon: Bell, href: '/student/notifications' },
+        { id: 'profile', label: 'الملف الشخصي', icon: Settings, href: '/student/profile' },
     ];
 
     if (loading) {
@@ -143,19 +144,20 @@ export default function StudentLayout({ children, activeTab, onTabChange }: {
                         <nav className="space-y-2">
                             {menuItems.map((item) => {
                                 const Icon = item.icon;
+                                const isActive = pathname === item.href;
                                 return (
-                                    <button
+                                    <Link
                                         key={item.id}
-                                        onClick={() => onTabChange(item.id)}
+                                        href={item.href}
                                         className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-right transition-colors ${
-                                            activeTab === item.id
+                                            isActive
                                                 ? 'bg-blue-100 text-blue-700'
                                                 : 'text-gray-600 hover:bg-gray-100'
                                         }`}
                                     >
                                         <Icon className="w-5 h-5" />
                                         <span className="font-medium">{item.label}</span>
-                                    </button>
+                                    </Link>
                                 );
                             })}
                         </nav>
