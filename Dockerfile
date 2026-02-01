@@ -24,10 +24,10 @@ RUN npx prisma generate
 RUN npm run build
 
 # ---------- Runtime Stage ----------
-FROM node:20-alpine
+FROM node:20-slim
 
-# تثبيت OpenSSL runtime libraries لـ Prisma compatibility
-RUN apk add --no-cache bash openssl1.1-compat
+# تثبيت OpenSSL runtime libraries لـ Prisma compatibility (Debian already has OpenSSL 1.1)
+RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 ENV NODE_ENV=production
