@@ -1,37 +1,45 @@
 # syntax=docker/dockerfile:1
 
-# ---------- Build stage ----------
+# ---------- Build Stage ----------
 FROM node:20-alpine AS builder
+
+# تثبيت أدوات أساسية + OpenSSL لتجنب Prisma warnings
+RUN apk add --no-cache bash openssl git
 
 WORKDIR /app
 
-# Install deps
+# نسخ package.json + package-lock.json
 COPY package.json package-lock.json* ./
+
+# تثبيت dependencies
 RUN npm ci
 
-# Copy source
+# نسخ الكود المصدر
 COPY prisma ./prisma
 COPY tsconfig.json ./
 COPY src ./src
 
-# Build
+# Generate Prisma client + build TypeScript
 RUN npx prisma generate
 RUN npm run build
 
-
-# ---------- Runtime stage ----------
+# ---------- Runtime Stage ----------
 FROM node:20-alpine
 
-WORKDIR /app
+# تثبيت OpenSSL runtime libraries لـ Prisma compatibility
+RUN apk add --no-cache bash openssl1.1-compat
 
+WORKDIR /app
 ENV NODE_ENV=production
 
-# Copy only what is needed
+# نسخ node_modules + dist + prisma
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/prisma ./prisma
 COPY package.json ./
 
+# Expose port app
 EXPOSE 3000
 
+# CMD مع Prisma migrate + تشغيل السيرفر
 CMD ["sh", "-c", "npx prisma migrate deploy && node dist/server.js"]
