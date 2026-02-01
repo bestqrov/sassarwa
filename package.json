@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "build": "chmod +x node_modules/.bin/prisma && prisma generate && tsc",
-    "start": "npm install && npm run build && (test -n \"$DATABASE_URL\" && prisma migrate deploy || echo \"Skipping migrations - DATABASE_URL not set\") && node dist/server.js",
+    "install-deps": "npm install",
+    "build-app": "npm run build",
+    "migrate-db": "test -n \"$DATABASE_URL\" && prisma migrate deploy || echo \"Skipping migrations - DATABASE_URL not set\"",
+    "start": "npm run install-deps && npm run build-app && npm run migrate-db && node dist/server.js",
     "start:prod": "npm run start",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate deploy",
