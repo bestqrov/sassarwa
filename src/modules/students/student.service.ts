@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { Student } from '@prisma/client';
 import prisma from '../../config/database';
 import { CreateStudentDto } from './dto/create-student.dto';
