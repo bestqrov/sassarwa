@@ -42,8 +42,7 @@ ENV NODE_ENV=production
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/frontend/.next ./frontend/.next
-COPY --from=builder /app/frontend/public ./frontend/public
+COPY --from=builder /app/frontend/dist ./frontend/dist
 COPY package.json ./
 
 # Expose port app
