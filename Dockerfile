@@ -18,9 +18,15 @@ RUN npm ci
 COPY prisma ./prisma
 COPY tsconfig.json ./
 COPY src ./src
+COPY frontend ./frontend
 
 # Generate Prisma client + build TypeScript
 RUN npx prisma generate
+RUN npm run build
+
+# Build frontend
+WORKDIR /app/frontend
+RUN npm ci
 RUN npm run build
 
 # ---------- Runtime Stage ----------
@@ -36,6 +42,8 @@ ENV NODE_ENV=production
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/frontend/.next ./frontend/.next
+COPY --from=builder /app/frontend/public ./frontend/public
 COPY package.json ./
 
 # Expose port app
