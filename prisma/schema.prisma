@@ -1,0 +1,350 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  SECRETARY
+  SUPER_ADMIN
+}
+
+enum InscriptionType {
+  SOUTIEN
+  FORMATION
+}
+
+model User {
+  id            String   @id @default(uuid())
+  email         String   @unique
+  password      String
+  role          UserRole
+  name          String
+  avatar        String?  // Base64 encoded image or URL
+  gsm           String?
+  whatsapp      String?
+  address       String?
+  schoolLevel   String?
+  certification String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Student {
+  id            String    @id @default(uuid())
+  name          String
+  surname       String
+  phone         String?
+  email         String?
+  password      String?
+  cin           String?
+  address       String?
+  birthDate     DateTime?
+  birthPlace    String?
+  fatherName    String?
+  motherName    String?
+  parentName    String?
+  parentPhone   String?
+  parentRelation String?
+  schoolLevel   String?
+  currentSchool String?
+  subjects      Json?
+  photo         String? // Base64 encoded image or file path
+  status        String    @default("active") // active, inactive
+  active        Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  inscriptions Inscription[]
+  payments     Payment[]
+  attendances  Attendance[]
+  homeworkSubmissions HomeworkSubmission[]
+  examResults  ExamResult[]
+
+  groupIds     String[]
+  groups       Group[]  @relation()
+
+  @@map("students")
+}
+
+model Group {
+  id            String   @id @default(uuid())
+  name          String
+  type          InscriptionType @default(SOUTIEN)
+
+  // Soutien fields
+  level         String? // e.g. LYCEE
+  subject       String? // e.g. MATHS
+
+  // Formation fields
+  formationId   String? @default(uuid())
+  formation     Formation? @relation(fields: [formationId], references: [id])
+
+  room          String?
+  whatsappUrl   String?
+  status        String   @default("Active") // Active, Inactive, Completed
+
+  teacherId     String? @default(uuid())
+  teacher       Teacher? @relation(fields: [teacherId], references: [id])
+
+  studentIds    String[]
+  students      Student[] @relation()
+
+  timeSlots     Json? // [{ day: string, startTime: string, endTime: string }]
+  sessions      Json? // [{ date: string, topic: string, notes: string }]
+
+  homework      Homework[]
+  exams         Exam[]
+  attendances   Attendance[]
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("groups")
+}
+
+model Inscription {
+  id        String          @id @default(uuid())
+  studentId String
+  student   Student         @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  type      InscriptionType
+  category  String
+  amount    Float
+  date      DateTime        @default(now())
+  note      String?
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+
+  @@map("inscriptions")
+}
+
+model Payment {
+  id        String   @id @default(uuid())
+  studentId String
+  student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  amount    Float
+  method    String
+  note      String?
+  date      DateTime @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("payments")
+}
+
+model Attendance {
+  id        String   @id @default(uuid())
+  studentId String
+  groupId   String
+  student   Student  @relation(fields: [studentId], references: [id])
+  group     Group    @relation(fields: [groupId], references: [id])
+  date      DateTime
+  status    String   // PRESENT, ABSENT, LATE, EXCUSED
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("attendances")
+}
+
+model Settings {
+  id           String   @id @default(uuid())
+  schoolName   String
+  logo         String?
+  academicYear String
+  contactInfo  String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("settings")
+}
+
+model Formation {
+  id          String   @id @default(uuid())
+  name        String
+  duration    String
+  price       Float
+  description String?
+  level        String? // Added missing field
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  groups      Group[]
+
+  @@map("formations")
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+
+model Transaction {
+  id          String          @id @default(uuid())
+  type        TransactionType
+  amount      Float
+  category    String
+  description String?
+  date        DateTime        @default(now())
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@map("transactions")
+}
+
+model Pricing {
+  id          String   @id @default(uuid())
+  category    String   // SOUTIEN, FORMATION
+  level       String   // LYCÉE, COLLÈGE, etc.
+  subject     String   // MATHS, PHYSIQUE, etc.
+  price       Float    @default(0)
+  description String?
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("pricing")
+}
+
+model Homework {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  groupId     String
+  group       Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  teacherId   String
+  teacher     Teacher  @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  dueDate     DateTime
+  attachments String[] // File URLs or paths
+  maxScore    Float    @default(20)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  submissions HomeworkSubmission[]
+
+  @@map("homework")
+}
+
+model Exam {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  groupId     String
+  group       Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  teacherId   String
+  teacher     Teacher  @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  date        DateTime
+  duration    Int      // Duration in minutes
+  maxScore    Float    @default(20)
+  type        String   @default("WRITTEN") // WRITTEN, ORAL, PRACTICAL
+  attachments String[] // File URLs or paths
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  results     ExamResult[]
+
+  @@map("exams")
+}
+
+model HomeworkSubmission {
+  id         String   @id @default(uuid())
+  homeworkId String   @default(uuid())
+  studentId  String   @default(uuid())
+  homework   Homework @relation(fields: [homeworkId], references: [id], onDelete: Cascade)
+  student    Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  submittedAt DateTime @default(now())
+  attachments String[] // File URLs or paths
+  notes      String?
+  score      Float?
+  feedback   String?
+  gradedAt   DateTime?
+  gradedBy   String?  // Teacher ID
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([homeworkId, studentId])
+  @@map("homework_submissions")
+}
+
+model ExamResult {
+  id        String   @id @default(uuid())
+  examId    String   @default(uuid())
+  exam      Exam     @relation(fields: [examId], references: [id], onDelete: Cascade)
+  studentId String   @default(uuid())
+  student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  score     Float
+  grade     String?  // A, B, C, D, F
+  notes     String?
+  gradedAt  DateTime @default(now())
+  gradedBy  String   // Teacher ID
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([examId, studentId])
+  @@map("exam_results")
+}
+
+model Notification {
+  id          String   @id @default(uuid())
+  title       String
+  message     String
+  type        String   // ADMIN, TEACHER, STUDENT, GENERAL
+  recipientId String?  // Specific recipient, null for general
+  recipientType String? // Added missing field
+  createdBy   String?  // Who created the notification
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  read         Boolean? @default(false) // Added missing field
+  readAt        DateTime? // Added missing field
+
+  @@map("notifications")
+}
+
+enum TeacherStatus {
+  Active
+  Inactive
+  Suspended
+}
+
+enum PaymentType {
+  HOURLY
+  FIXED
+  COMMISSION
+}
+
+model Teacher {
+  id            String   @id @default(uuid())
+  name          String
+  email         String   @unique
+  password      String
+  phone         String?
+  cin           String?
+  dob           DateTime?
+  gender        String?
+  picture       String?  // Base64 encoded image or URL
+  status        String   @default("Active")
+  role          String   @default("TEACHER")
+  hourlyRate    Float    @default(0)
+  paymentType   String   @default("HOURLY")
+  groups        Group[]
+  homeworks     Homework[]
+  exams         Exam[]
+  commission   Float? // Added missing field (added for clarity)
+  address       String? // Added missing field (added for clarity)
+  schoolLevel   String? // Added missing field (added for clarity)
+  specialties   String[] // Added missing field
+  levels        String[] // Added missing field
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
