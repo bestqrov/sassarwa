@@ -21,7 +21,7 @@ export default function HomePage() {
                         </div>
                         <nav className="hidden md:flex space-x-8">
                             <Link href="/login" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">
-                                تسجيل دخول السكرتير
+                                تسجيل دخول المشرف
                             </Link>
                         </nav>
                     </div>
@@ -94,13 +94,13 @@ export default function HomePage() {
                         <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
                             <UserCheck className="w-8 h-8 text-blue-600" />
                         </div>
-                        <h3 className="text-xl font-bold text-gray-900 mb-2">السكرتير</h3>
+                        <h3 className="text-xl font-bold text-gray-900 mb-2">المشرف</h3>
                         <p className="text-gray-600 mb-6">
                             إدارة النظام والطلاب والأساتذة والتقارير
                         </p>
                         <Link href="/login">
                             <Button className="w-full">
-                                دخول السكرتير
+                                دخول المشرف
                             </Button>
                         </Link>
                     </div>
