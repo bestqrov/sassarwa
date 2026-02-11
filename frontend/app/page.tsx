@@ -21,7 +21,7 @@ export default function HomePage() {
                         </div>
                         <nav className="hidden md:flex space-x-8">
                             <Link href="/login" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">
-                                تسجيل دخول المشرف
+                                تسجيل دخول السكرتير
                             </Link>
                         </nav>
                     </div>
@@ -40,19 +40,35 @@ export default function HomePage() {
                 </div>
 
                 {/* Access Cards */}
-                <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-                    {/* Admin Access */}
+                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+                    {/* Student Access */}
                     <div className="bg-white rounded-xl shadow-lg p-8 text-center hover:shadow-xl transition-shadow">
-                        <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <UserCheck className="w-8 h-8 text-blue-600" />
+                        <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <Users className="w-8 h-8 text-purple-600" />
                         </div>
-                        <h3 className="text-xl font-bold text-gray-900 mb-2">المشرف</h3>
+                        <h3 className="text-xl font-bold text-gray-900 mb-2">الطالب</h3>
                         <p className="text-gray-600 mb-6">
-                            إدارة النظام والطلاب والأساتذة والتقارير
+                            متابعة الدروس والحضور والإشعارات
                         </p>
-                        <Link href="/login">
-                            <Button className="w-full">
-                                دخول المشرف
+                        <Link href="/student-login">
+                            <Button variant="outline" className="w-full border-purple-600 text-purple-600 hover:bg-purple-50">
+                                دخول الطالب
+                            </Button>
+                        </Link>
+                    </div>
+
+                    {/* Parent Access */}
+                    <div className="bg-white rounded-xl shadow-lg p-8 text-center hover:shadow-xl transition-shadow">
+                        <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <UserCheck className="w-8 h-8 text-orange-600" />
+                        </div>
+                        <h3 className="text-xl font-bold text-gray-900 mb-2">الوالد</h3>
+                        <p className="text-gray-600 mb-6">
+                            متابعة أداء الطالب والإشعارات
+                        </p>
+                        <Link href="/parent-login">
+                            <Button variant="outline" className="w-full border-orange-600 text-orange-600 hover:bg-orange-50">
+                                دخول الوالد
                             </Button>
                         </Link>
                     </div>
@@ -73,18 +89,18 @@ export default function HomePage() {
                         </Link>
                     </div>
 
-                    {/* Student Access */}
+                    {/* Secretary Access */}
                     <div className="bg-white rounded-xl shadow-lg p-8 text-center hover:shadow-xl transition-shadow">
-                        <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <Users className="w-8 h-8 text-purple-600" />
+                        <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <UserCheck className="w-8 h-8 text-blue-600" />
                         </div>
-                        <h3 className="text-xl font-bold text-gray-900 mb-2">الطالب</h3>
+                        <h3 className="text-xl font-bold text-gray-900 mb-2">السكرتير</h3>
                         <p className="text-gray-600 mb-6">
-                            متابعة الدروس والحضور والإشعارات
+                            إدارة النظام والطلاب والأساتذة والتقارير
                         </p>
-                        <Link href="/student-login">
-                            <Button variant="outline" className="w-full border-purple-600 text-purple-600 hover:bg-purple-50">
-                                دخول الطالب
+                        <Link href="/login">
+                            <Button className="w-full">
+                                دخول السكرتير
                             </Button>
                         </Link>
                     </div>
