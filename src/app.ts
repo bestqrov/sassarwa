@@ -2,6 +2,7 @@ import express, { Application } from 'express';
 import cors from 'cors';
 import path from 'path';
 import { errorMiddleware } from './middlewares/error.middleware';
+import { env } from './config/env';
 
 // Import routes
 import authRoutes from './auth/auth.routes';
@@ -28,6 +29,11 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 // ================= HEALTH CHECK =================
 app.get('/health', (_req, res) => {
     res.json({ success: true, message: 'Server is running' });
+});
+
+// ================= ROOT REDIRECT =================
+app.get('/', (req, res) => {
+    res.redirect(env.FRONTEND_URL);
 });
 
 // ================= API ROUTES =================
