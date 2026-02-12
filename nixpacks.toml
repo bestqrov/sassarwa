@@ -5,4 +5,4 @@ commands = ["npm ci"]
 commands = ["npm run build"]
 
 [phases.start]
-commands = ["npx prisma migrate deploy", "npx prisma db seed", "node dist/server.js"]
+commands = ["npx prisma migrate deploy", "npm run prisma:seed", "node dist/server.js"]
