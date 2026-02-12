@@ -31,11 +31,6 @@ app.get('/health', (_req, res) => {
     res.json({ success: true, message: 'Server is running' });
 });
 
-// ================= ROOT REDIRECT =================
-app.get('/', (req, res) => {
-    res.redirect(env.FRONTEND_URL);
-});
-
 // ================= API ROUTES =================
 const apiRouter = express.Router();
 apiRouter.use('/auth', authRoutes);
