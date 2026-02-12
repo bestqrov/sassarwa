@@ -10,6 +10,10 @@ async function main() {
     try {
         console.log('🚀 Starting database seed...');
 
+        // Test database connection
+        await prisma.$connect();
+        console.log('✅ Database connected successfully');
+
         // Create admin account
         const hashedAdminPassword = await bcrypt.hash('admin123', 10);
 
