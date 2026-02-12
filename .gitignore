@@ -31,4 +31,4 @@ yarn-error.log*
 Thumbs.db
 
 # Prisma
-prisma/migrations/
+# prisma/migrations/  # Commented out to allow migrations in production
