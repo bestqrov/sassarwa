@@ -701,6 +701,7 @@ async function main() {
         }
         console.log('Created sample attendance records');
     }
+
     */
 
     console.log('\n✅ Database seed completed!');
