@@ -8,7 +8,7 @@ import { InscriptionType } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-    console.log('Starting database seed...');
+    console.log('🚀 Starting database seed...');
 
     // Create admin account
     const hashedAdminPassword = await bcrypt.hash('admin123', 10);
@@ -52,6 +52,8 @@ async function main() {
         role: secretary.role,
     });
 
+    // Commented out sample data creation for faster seeding
+    /*
     console.log('\nCreating sample teachers...');
     const teachers = [
         {
@@ -699,6 +701,7 @@ async function main() {
         }
         console.log('Created sample attendance records');
     }
+    */
 
     console.log('\n✅ Database seed completed!');
 }
