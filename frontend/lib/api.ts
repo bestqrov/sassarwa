@@ -2,7 +2,7 @@
 import axios from "axios";
 import { getAccessToken, setAccessToken, clearTokens } from "../store/useAuthStore";
 
-const api = axios.create({ baseURL: 'http://localhost:3001/api' });
+const api = axios.create({ baseURL: '/api' });
 
 let isRefreshing = false;
 let failedQueue: any[] = [];

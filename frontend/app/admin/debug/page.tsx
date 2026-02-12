@@ -17,7 +17,7 @@ export default function DebugPage() {
     const testCreateTransaction = async () => {
         try {
             const token = localStorage.getItem('accessToken');
-            const url = 'http://localhost:3000/transactions';
+            const url = '/api/transactions';
             addLog(`Sending POST to ${url}`);
 
             const payload = {

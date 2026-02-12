@@ -17,7 +17,7 @@ export default function RegisterAdmin() {
         setError(null);
         if (password !== confirm) return setError('Passwords do not match');
         try {
-            const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+            const API_URL = '/api';
             const res = await fetch(`${API_URL}/auth/register-admin`, {
                 method: 'POST', headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password, name })

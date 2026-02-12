@@ -68,14 +68,13 @@ export default function TransactionsPage() {
         try {
             const token = localStorage.getItem('accessToken');
             const headers = { 'Authorization': `Bearer ${token}` };
-            const API_PORT = '3000';
 
             // Fetch Teachers
-            const teachersRes = await fetch(`http://localhost:${API_PORT}/teachers`, { headers });
+            const teachersRes = await fetch(`/api/teachers`, { headers });
             const teachersData = await teachersRes.json();
 
             // Fetch Users (Admins/Secretaries)
-            const usersRes = await fetch(`http://localhost:${API_PORT}/users`, { headers });
+            const usersRes = await fetch(`/api/users`, { headers });
             const usersData = await usersRes.json();
 
             const allPersonnel: Personnel[] = [];
