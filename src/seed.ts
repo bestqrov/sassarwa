@@ -75,31 +75,3 @@ main()
     .finally(async () => {
         await prisma.$disconnect();
     });
-                email: 'secretary@arwaeduc.com',
-                password: hashedPassword,
-                name: 'Souad arwaeduc',
-                role: 'SECRETARY',
-            },
-        });
-
-        console.log('✅ Secretary account created:', {
-            email: secretary.email,
-            name: secretary.name,
-            role: secretary.role,
-        });
-
-        console.log('\n✅ Database seed completed successfully!');
-    } catch (error) {
-        console.error('❌ Error during seeding:', error);
-        throw error;
-    }
-}
-
-main()
-    .catch((e) => {
-        console.error('Error seeding database:', e);
-        process.exit(1);
-    })
-    .finally(async () => {
-        await prisma.$disconnect();
-    });
