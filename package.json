@@ -14,7 +14,7 @@
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate deploy",
     "prisma:studio": "prisma studio",
-    "prisma:seed": "node seed.js"
+    "prisma:seed": "ts-node prisma/seed.ts"
   },
   "keywords": [
     "school",
