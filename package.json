@@ -5,15 +5,14 @@
   "main": "dist/server.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
-    "build": "chmod +x node_modules/.bin/prisma && prisma generate && tsc",
+    "build": "prisma generate && tsc",
     "install-deps": "npm install",
     "build-app": "npm run build",
-    "migrate-db": "test -n \"$DATABASE_URL\" && prisma migrate deploy || echo \"Skipping migrations - DATABASE_URL not set\"",
     "seed-db": "node seed.js",
-    "start": "npm run migrate-db && npm run seed-db && node dist/server.js",
+    "start": "prisma db push --skip-generate && npm run seed-db && node dist/server.js",
     "start:prod": "npm run start",
     "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate deploy",
+    "prisma:push": "prisma db push",
     "prisma:studio": "prisma studio",
     "prisma:seed": "node seed.js"
   },

@@ -1,11 +1,11 @@
 #!/bin/bash
 set -e
 
-echo "🚀 Starting deployment process..."
+echo "🚀 Starting MongoDB deployment process..."
 
-echo "📦 Running migrations..."
-npx prisma migrate deploy
-echo "✅ Migrations completed"
+echo "📦 Pushing Prisma schema to MongoDB..."
+npx prisma db push --skip-generate
+echo "✅ Schema pushed to MongoDB"
 
 echo "🌱 Running database seed..."
 echo "Current directory: $(pwd)"

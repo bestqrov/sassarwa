@@ -1,1 +1,1 @@
-web: npm run migrate-db && npm run seed-db && node dist/server.js
+web: npx prisma db push --skip-generate && npm run seed-db && node dist/server.js
