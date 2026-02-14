@@ -9,10 +9,15 @@ const prisma = new PrismaClient();
 async function main() {
     try {
         console.log('🚀 Starting database seed...');
+        console.log('Database URL:', process.env.DATABASE_URL ? 'Set' : 'Not set');
 
         // Test database connection
         await prisma.$connect();
         console.log('✅ Database connected successfully');
+
+        // Test a simple query
+        const testQuery = await prisma.$queryRaw`SELECT 1 as test`;
+        console.log('✅ Database query test passed:', testQuery);
 
         // Create admin account
         const hashedAdminPassword = await bcrypt.hash('admin123', 10);
