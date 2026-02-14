@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import * as groupsService from './groups.service';
 import { sendSuccess, sendError } from '../../utils/response';
-import { InscriptionType } from '@prisma/client';
+import { InscriptionType } from '../../types/enums';
 
 export const createGroup = async (req: Request, res: Response) => {
     try {

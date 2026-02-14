@@ -1,5 +1,5 @@
 import prisma from '../../config/database';
-import { TransactionType } from '@prisma/client';
+import { TransactionType } from '../../types/enums';
 
 interface CreateTransactionData {
     type: TransactionType;

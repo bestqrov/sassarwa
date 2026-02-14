@@ -1,5 +1,6 @@
 import prisma from '../../config/database';
-import { Group, InscriptionType, Prisma } from '@prisma/client';
+import { Group, Prisma } from '@prisma/client';
+import { InscriptionType } from '../../types/enums';
 
 export interface CreateGroupData {
     name: string;

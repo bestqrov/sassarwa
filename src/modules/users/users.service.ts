@@ -1,6 +1,6 @@
 import prisma from '../../config/database';
 import { hashPassword } from '../../utils/bcrypt';
-import { UserRole } from '@prisma/client';
+import { UserRole } from '../../types/enums';
 
 interface CreateUserData {
     email: string;

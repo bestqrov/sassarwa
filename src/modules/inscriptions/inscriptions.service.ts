@@ -1,5 +1,5 @@
 import prisma from '../../config/database';
-import { InscriptionType } from '@prisma/client';
+import { InscriptionType } from '../../types/enums';
 import { createPayment } from '../payments/payments.service';
 
 interface CreateInscriptionData {
