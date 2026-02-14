@@ -5,4 +5,4 @@ commands = ["npm ci"]
 commands = ["npm run build"]
 
 [phases.start]
-commands = ["npx prisma migrate deploy && echo '✅ Migrations completed'", "echo '🚀 Starting seeding...' && npm run prisma:seed && echo '✅ Seeding completed' || echo '❌ Seeding failed'", "echo '🚀 Starting server...' && node dist/server.js"]
+commands = ["npx prisma migrate deploy && echo '✅ Migrations completed'", "echo '🚀 Starting seeding...'" , "npm run prisma:seed || echo '❌ Seeding failed with error'", "echo '🚀 Starting server...' && node dist/server.js"]
